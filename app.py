@@ -173,6 +173,7 @@ base_sizes = {
     "Large (60x80 cm)": (60, 80),
     "XL (60x90 cm)": (60, 90)
 }
+selected_label = st.sidebar.selectbox("Canvas Size", list(base_sizes.keys()))
 orientation = st.sidebar.radio("Orientation", ["Portrait (Tall)", "Landscape (Wide)"])
 
 # Extract dimensions
@@ -274,5 +275,6 @@ if st.session_state.zip_ready:
         mime="application/zip"
 
     )
+
 
 
