@@ -173,8 +173,6 @@ base_sizes = {
     "Large (60x80 cm)": (60, 80),
     "XL (60x90 cm)": (60, 90)
 }
-
-selected_base = st.sidebar.selectbox("Canvas Size", list(base_sizes.keys()))
 orientation = st.sidebar.radio("Orientation", ["Portrait (Tall)", "Landscape (Wide)"])
 
 # Extract dimensions
@@ -200,6 +198,7 @@ uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file and df_dmc is not None:
     img = Image.open(uploaded_file).convert("RGB")
+    selected_label = st.sidebar.selectbox("Canvas Size", list(base_sizes.keys()))
 
     width_cm, height_cm = base_sizes[selected_label]
     current_aspect_ratio = (width_cm, height_cm)
@@ -275,4 +274,5 @@ if st.session_state.zip_ready:
         mime="application/zip"
 
     )
+
 
