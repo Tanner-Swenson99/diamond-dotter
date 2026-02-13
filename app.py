@@ -200,13 +200,8 @@ uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file and df_dmc is not None:
     img = Image.open(uploaded_file).convert("RGB")
-    selected_label = st.sidebar.selectbox("Canvas Size", list(base_sizes.keys()))
-
-    width_cm, height_cm = base_sizes[selected_label]
-    current_aspect_ratio = (width_cm, height_cm)
-
     col1, col2 = st.columns(2)
-
+    
     with col1:
         st.subheader("1. Adjust Your Crop")
         cropped_img = st_cropper(
@@ -277,6 +272,7 @@ if st.session_state.zip_ready:
         mime="application/zip"
 
     )
+
 
 
 
