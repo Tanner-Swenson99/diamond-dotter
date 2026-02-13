@@ -186,6 +186,7 @@ else:
     width_cm, height_cm = w_cm, h_cm
 
 current_aspect_ratio = (width_cm, height_cm)
+cropper_key = f"cropper_{selected_label}_{orientation}"
 
 threshold = st.sidebar.slider("Color Merging", 0, 50, 25)
 min_drills = st.sidebar.number_input("Min Drills", value=100)
@@ -211,6 +212,7 @@ if uploaded_file and df_dmc is not None:
         cropped_img = st_cropper(
             img, 
             aspect_ratio=current_aspect_ratio, 
+            key=cropper_key,
             realtime_update=True, 
             box_color="#F8F8F8"
         )
@@ -275,6 +277,7 @@ if st.session_state.zip_ready:
         mime="application/zip"
 
     )
+
 
 
 
