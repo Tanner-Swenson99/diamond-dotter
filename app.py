@@ -201,7 +201,7 @@ uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png", "jpeg"])
 if uploaded_file and df_dmc is not None:
     img = Image.open(uploaded_file).convert("RGB")
 
-    width_cm, height_cm = size_options[selected_label]
+    width_cm, height_cm = base_sizes[selected_label]
     current_aspect_ratio = (width_cm, height_cm)
 
     col1, col2 = st.columns(2)
@@ -275,3 +275,4 @@ if st.session_state.zip_ready:
         mime="application/zip"
 
     )
+
