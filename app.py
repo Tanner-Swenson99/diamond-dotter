@@ -167,12 +167,27 @@ def process_image(cropped_img, threshold, min_drills, width_cm, height_cm, df_dm
 
 # --- UI SIDEBAR ---
 st.sidebar.title("⚙️ Settings")
-size_options = {
-    "Small (30x40 cm)": (30, 40), "Medium (40x50 cm)": (40, 50),
-    "Large (60x80 cm)": (60, 80), "XL (60x90 cm)": (60, 90)
+base_sizes = {
+    "Small (30x40 cm)": (30, 40),
+    "Medium (40x50 cm)": (40, 50),
+    "Large (60x80 cm)": (60, 80),
+    "XL (60x90 cm)": (60, 90)
 }
-selected_label = st.sidebar.selectbox("Canvas Size", list(size_options.keys()))
-width_cm, height_cm = size_options[selected_label]
+
+selected_base = st.sidebar.selectbox("Canvas Size", list(base_sizes.keys()))
+orientation = st.sidebar.radio("Orientation", ["Portrait (Tall)", "Landscape (Wide)"])
+
+# Extract dimensions
+w_cm, h_cm = base_sizes[selected_base]
+
+# Flip if Landscape
+if orientation == "Landscape (Wide)":
+    width_cm, height_cm = h_cm, w_cm  # Swap values
+else:
+    width_cm, height_cm = w_cm, h_cm
+
+current_aspect_ratio = (width_cm, height_cm)
+
 threshold = st.sidebar.slider("Color Merging", 0, 50, 25)
 min_drills = st.sidebar.number_input("Min Drills", value=100)
 
@@ -193,19 +208,6 @@ if uploaded_file and df_dmc is not None:
 
     with col1:
         st.subheader("1. Adjust Your Crop")
-        
-        # 1. Get image dimensions
-        img_w, img_h = img.size
-        
-        # 2. Set a consistent UI height (e.g., 500px)
-        # This prevents the app from jumping around too much
-        c_height = 500
-        
-        # 3. Calculate the width needed to fit the image's aspect ratio perfectly
-        # This removes the "dead zones" on the sides or top/bottom
-        c_width = int(c_height * (img_w / img_h))
-        
-        # 4. Pass these to the cropper
         cropped_img = st_cropper(
             img, 
             aspect_ratio=current_aspect_ratio, 
@@ -271,4 +273,5 @@ if st.session_state.zip_ready:
         data=st.session_state.zip_data, 
         file_name="DiamondArt_Kit.zip", 
         mime="application/zip"
+
     )
